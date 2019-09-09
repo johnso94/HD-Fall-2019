@@ -1,0 +1,5 @@
+image: stodevx/cs251-toolkit:latest
+build:
+    stage: build
+    script:
+        - cs251tk --ci

@@ -1,5 +1,5 @@
-image: stodevx/cs251-toolkit:latest
+image: stodevx/stograde:latest
 build:
     stage: build
     script:
-        - cs251tk --ci
+        - stograde --ci

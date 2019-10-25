@@ -1,5 +1,7 @@
 image: stodevx/stograde:latest
 build:
+    tags:
+        - raspberrypi
     stage: build
     script:
         - stograde --ci

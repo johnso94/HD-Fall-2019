@@ -9,6 +9,10 @@ greeting:			@ format string for printf
 
 greeting2:
 	.asciz "a different string besides the original\n"
+
+label:
+	.asciz "The value is %d and %x in hexadecimal\n"
+	
 /* main program */
 	.text
 	.align 	2
@@ -24,6 +28,11 @@ main:
 	ldr	r0, greetingP+4
 	bl	printf
 
+	ldr	r0, greetingP+8
+	ldr	r1, lit
+	ldr	r2, lit
+	bl	printf
+	
 	mov	r0, #0		@ load return value
 	sub	sp, fp, #4	@ tear down stack frame
 	pop	{fp, pc}
@@ -33,3 +42,9 @@ main:
 greetingP:
 	.word	greeting	@ pointer variable to string greeting
 	.word	greeting2
+	.word	label
+
+	.align 2
+	
+lit:
+	.word	729

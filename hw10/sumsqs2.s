@@ -45,14 +45,6 @@ square:
 	.align	2
 .LC2:
 	.ascii	"The sum of the first %d squares is %d.\012\000"
-	.align	2
-.LC3:
-	.ascii	"The value of fp is 0x%x\012\000"
-	.align	2
-
-.LC4:
-	.ascii	"The value of sp is 0x%x\012\00"
-
 	.text
 	.align	2
 	.global	main
@@ -60,20 +52,12 @@ square:
 	.arm
 	.fpu vfp
 	.type	main, %function
-	.align	2
-
 main:
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 1, uses_anonymous_args = 0
 	push	{fp, lr}
 	add	fp, sp, #4
 	sub	sp, sp, #16
-	ldr	r0, .L7+12
-	mov	r1, fp
-	bl	printf
-	ldr	r0, .L7+16
-	mov	r1, sp
-	bl	printf
 	mov	r3, #0
 	str	r3, [fp, #-8]
 	ldr	r0, .L7
@@ -116,8 +100,6 @@ main:
 	.word	.LC0
 	.word	.LC1
 	.word	.LC2
-	.word	.LC3
-	.word	.LC4
 	.size	main, .-main
 	.ident	"GCC: (Raspbian 8.3.0-6+rpi1) 8.3.0"
 	.section	.note.GNU-stack,"",%progbits

@@ -62,7 +62,8 @@ main:
 	str	r3, [fp, #-8]
 .L10:	ldr	r0, .L7
 	bl	printf
-	b	.L10gi
+#	b	.L10
+.L11:	b	.L11
 	sub	r3, fp, #16
 	mov	r1, r3
 	ldr	r0, .L7+4

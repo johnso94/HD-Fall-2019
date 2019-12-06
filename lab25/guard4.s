@@ -45,9 +45,12 @@ else:
 	ldr	r0, gt_msgP	@ otherwise print greater-than message
 	ldr	r1, [fp, #-8]	
 	bl	printf
+	mov	r0, #0		@ assign 0 as return value
+	sub	sp, fp, #4	@ tear down stack frame
+	pop	{fp, pc}
 
 next:
-	mov	r0, #0		@ assign 0 as return value
+	mov	r0, #1		@ assign 1 as return value
 	sub	sp, fp, #4	@ tear down stack frame
 	pop	{fp, pc}
 

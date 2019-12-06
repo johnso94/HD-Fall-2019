@@ -22,7 +22,9 @@ square:
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 1, uses_anonymous_args = 0
 	@ link register save eliminated.
-	str	fp, [sp, #-4]!
+	push {fp, lr}
+	add	fp, sp, #4
+	sub	sp, sp, #8
 	add	fp, sp, #0
 	sub	sp, sp, #12
 	str	r0, [fp, #-8]
@@ -30,10 +32,9 @@ square:
 	ldr	r2, [fp, #-8]
 	mul	r3, r2, r3
 	mov	r0, r3
-	add	sp, fp, #0
+	sub	sp, fp, #4
 	@ sp needed
-	ldr	fp, [sp], #4
-	bx	lr
+	pop	{fp, pc}
 	.size	square, .-square
 	.section	.rodata
 	.align	2

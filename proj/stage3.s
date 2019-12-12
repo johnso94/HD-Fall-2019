@@ -25,7 +25,9 @@ close:
 	#sub	r6, r6, #1
 	sub	sp, fp, #4
 	pop	{fp, pc}
-
+simple_quit:
+	sub	sp, fp, #4
+	pop	{fp, pc}
 translate:
 	push	{fp,lr}
 	add	fp, sp, #4
@@ -43,13 +45,27 @@ check:
 	cmp	r0,r1
 	beq	close
 
-	ldr	r0, buffP@this section checks whether its the end of the line
+	ldr	r0, [fp, #-12]
+	mov	r1, #0
+	cmp r0, r1
+	bne	next
+	ldr	r0, buffP
+	ldr	r1, [fp, #-8]
+	bl	get_byte
+	mov r1, #'a'
+	cmp r0, r1
+	bgt	checkz
+
+next:
+	ldr	r0, buffP@this section changes our check to 0 if its a space
 	ldr	r1, [fp, #-8]
 	bl	get_byte
 	mov r1, #' '
-	cmp r0,r1
-	beq check_word
-
+	cmp r0, r1
+	bne continue
+	bl	update_check
+	str r0, [fp,#-12]
+continue:
 	ldr r0, buffP
 	ldr	r1, [fp, #-8]
 	bl	get_byte
@@ -74,15 +90,42 @@ change:
 	add r1, r1, r2
 	str	r1, [fp, #-8]
 	b check
-check_word:
+update_check:
 	push	{fp,lr}
 	add	fp, sp, #4
 	sub	sp, sp, #8
 
-	add	r8, r8, #1
+	mov r0, #0
 
-	sub	sp, fp, #4
-	pop	{fp, pc}
+	b	simple_quit
+add_word:@adds one to our count of word
+	add	r8, r8, #1
+	mov r0, #1
+	str r0, [fp, #-12]
+	b	continue
+checkz:@checks if its less than z
+	ldr	r0, buffP
+	ldr	r1, [fp, #-8]
+	bl	get_byte
+	mov r1, #'z'
+	cmp	r0,r1
+	ble	add_word
+	ldr r0, buffP
+	ldr	r1, [fp, #-8]
+	bl	get_byte
+	mov	r1, #'A'
+	cmp r0, r1
+	bge	checkZ
+	b next
+checkZ:
+	ldr	r0, buffP
+	ldr	r1, [fp, #-8]
+	bl	get_byte
+	mov r1, #'Z'
+	cmp	r0,r1
+	ble	add_word
+	b next
+
 get_trans:
 	push	{fp,lr}
 	add	fp, sp, #4

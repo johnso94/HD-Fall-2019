@@ -11,7 +11,7 @@ results:			@ format string for printf
 	.asciz "The call fact(%d) returns %d\n"
 
 /* REPLACE THIS BY YOUR DEFINITION OF fact() HERE */
-	.data
+	.text
 	.align 2
 fact:
 	push	{fp, lr}	@ setup stack frame
